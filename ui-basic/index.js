@@ -1,5 +1,9 @@
 /* eslint-disable no-undef */
 $(() => {
+  $.ajaxSetup({
+    url: `api/`
+  });
+  
   let lastTxt = '';
   $('#search-text').on('input', () => {
     const newTxt = $('#search-text').val();

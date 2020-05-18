@@ -4,8 +4,6 @@ require('dotenv').config();
 
 const app = Express();
 
-app.use(Express.static('static'));
-
 const musicStorage = new MS(app, {
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -16,5 +14,5 @@ const musicStorage = new MS(app, {
 
 (async () => {
   await musicStorage.init();
-  app.listen(3000, () => console.log('Server started'));
+  app.listen(80, () => console.log('Server started'));
 })();
