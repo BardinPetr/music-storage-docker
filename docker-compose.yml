@@ -1,13 +1,6 @@
 version: "3"
 
 services:
-  ui:
-    image: 127.0.0.1:5000/musicstore-ui
-    build: ./ui-basic
-    ports:
-      - 80:80
-    depends_on:
-      - api
   db:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
@@ -22,21 +15,31 @@ services:
     restart: always
     volumes:
       - es-data:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
     environment:
       discovery.type: single-node
   api:
     image: 127.0.0.1:5000/musicstore-api
     build: ./service
     restart: always
-    ports:
-      - 3000:80
     env_file:
       - ./.env
     depends_on:
       - db
       - es
+  ui:
+    image: 127.0.0.1:5000/musicstore-ui
+    restart: always
+    build: ./ui
+    depends_on:
+      - api
+  nginx:
+    image: 127.0.0.1:5000/musicstore-nginx
+    restart: always
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - ui
 
 volumes:
   mysql-data:  
